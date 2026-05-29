@@ -485,15 +485,42 @@
   @media(max-width:768px){
     nav ul{display:none}
     .hamburger{display:flex}
-    .stats{flex-direction:column}
-    .stat{flex:unset;border-right:none;border-bottom:1px solid var(--border)}
+
+    /* hero */
+    .hero{padding:5.5rem 1.4rem 3rem;min-height:auto}
+
+    /* stats: full width, 2 colunas */
+    .stats{flex-direction:row;flex-wrap:wrap}
+    .stat{flex:1 1 calc(50% - 1px);border-right:none;border-bottom:1px solid var(--border);padding:1.4rem 1rem}
+    .stat:nth-child(odd){border-right:1px solid var(--border)}
     .stat:last-child{border-bottom:none}
+    .stat:nth-last-child(2):nth-child(odd){border-bottom:none}
+    .stat-num{font-size:1.8rem}
+
+    /* seções */
+    section{padding:3.5rem 1.4rem}
+    .lead{margin-bottom:2.2rem}
+    .cta-box{padding:2.2rem 1.4rem}
+
+    /* steps */
     .steps::before{display:none}
     .steps{flex-direction:column;gap:2rem}
     .step{text-align:left;padding:0;display:flex;gap:1rem;align-items:flex-start}
     .step-num{min-width:48px;margin:0}
-    .cta-box{padding:2.2rem 1.4rem}
+
+    /* showcase */
+    .showcase-tabs{gap:.4rem}
+    .stab{font-size:.78rem;padding:.45rem .8rem}
+
     footer{flex-direction:column;align-items:flex-start}
+  }
+  @media(max-width:480px){
+    .hero{padding:5rem 1.2rem 2.5rem}
+    h1{font-size:clamp(2.4rem,11vw,3.2rem)}
+    .btn-primary,.btn-ghost{padding:.75rem 1.4rem;font-size:.88rem}
+    .hero-actions{flex-direction:column;align-items:center}
+    .stat{flex:1 1 100%;border-right:none}
+    .stat:nth-child(odd){border-right:none}
   }
 
   @keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
@@ -502,6 +529,68 @@
   .hero h1{animation-delay:.18s}
   .hero .hero-sub{animation-delay:.28s}
   .hero .hero-actions{animation-delay:.38s}
+
+  /* ── ADS STAGE ── */
+  .ads-stage{position:relative;display:flex;justify-content:center;align-items:flex-start;flex-wrap:wrap;gap:1.8rem 1.5rem;padding:2.5rem 0 5rem}
+  .ads-chip{position:absolute;background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:.35rem .85rem;font-size:.75rem;font-weight:600;color:var(--accent);white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,.3);pointer-events:none;z-index:3}
+  .ads-chip--1{top:-18px;left:0;transform:rotate(-4deg)}
+  .ads-chip--2{top:-14px;right:0;transform:rotate(3deg);color:#4ade80}
+  .ads-chip--3{bottom:-18px;left:0;transform:rotate(2deg);color:#a78bfa}
+  .ads-chip--4{bottom:-14px;right:0;transform:rotate(-3deg);color:#fbbf24}
+  .ads-chip--5{top:42%;left:-8px;transform:rotate(-2deg);color:#7dd3fc}
+  .adcard{position:relative;z-index:1;border-radius:14px;overflow:hidden;width:200px;flex-shrink:0;box-shadow:0 20px 55px rgba(0,0,0,.5);transition:transform .3s,box-shadow .3s}
+  .adcard:hover{transform:translateY(-8px) rotate(0deg)!important;box-shadow:0 32px 80px rgba(0,0,0,.65)}
+  .adcard--meta{transform:rotate(-3deg);background:#fff;margin-top:2rem}
+  .adcard-topbar{display:flex;align-items:center;justify-content:space-between;padding:.55rem .7rem .35rem;background:#fff}
+  .adcard-platform{display:flex;align-items:center;gap:.35rem;font-size:.68rem;font-weight:600;color:#1c1c1c}
+  .adcard-sponsored{font-size:.58rem;color:#65676b;background:#f0f2f5;padding:.18rem .45rem;border-radius:4px}
+  .adcard-img-meta{width:100%;height:115px;background:linear-gradient(135deg,#01a1fe,#7c5cfc,#ec4899);position:relative;display:flex;align-items:flex-end}
+  .adcard-img-overlay{padding:.6rem .7rem;background:linear-gradient(transparent,rgba(0,0,0,.55));width:100%}
+  .adcard-body{padding:.55rem .7rem .45rem;background:#fff}
+  .adcard-site{font-size:.56rem;color:#65676b;margin-bottom:.18rem;text-transform:uppercase;letter-spacing:.04em}
+  .adcard-headline{font-size:.75rem;font-weight:700;color:#1c1c1c;line-height:1.25;margin-bottom:.45rem}
+  .adcard-cta-fb{background:#1877f2;color:#fff;border:none;padding:.38rem 1rem;border-radius:6px;font-size:.68rem;font-weight:600;cursor:pointer;width:100%}
+  .adcard-cta-ig{background:linear-gradient(90deg,#833ab4,#fd1d1d,#fcb045);color:#fff;border:none;padding:.38rem 1rem;border-radius:6px;font-size:.68rem;font-weight:600;cursor:pointer;width:100%}
+  .adcard-reactions{display:flex;align-items:center;padding:.42rem .7rem;border-top:1px solid #e4e6eb;background:#fff;font-size:.6rem;color:#65676b}
+  .adcard--insta{transform:rotate(2deg);background:#fff;margin-top:0}
+  .adcard-insta-header{display:flex;align-items:center;justify-content:space-between;padding:.5rem .65rem;background:#fff}
+  .adcard-insta-img{width:100%;height:145px;background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);position:relative;display:flex;align-items:flex-end}
+  .adcard-insta-actions{display:flex;gap:.6rem;padding:.45rem .65rem .2rem;background:#fff;font-size:.8rem}
+  .adcard-insta-caption{padding:0 .65rem .55rem;font-size:.62rem;color:#262626;line-height:1.4;background:#fff}
+  .adcard--google{transform:rotate(-2deg);background:#fff;margin-top:1rem}
+  .adcard-google-top{padding:.8rem .85rem .95rem}
+  .adcard-google-label{display:inline-block;border:1px solid #34a853;color:#34a853;font-size:.55rem;font-weight:600;padding:.08rem .28rem;border-radius:3px;margin-bottom:.3rem}
+  .adcard-google-url{font-size:.63rem;color:#202124;margin-bottom:.18rem}
+  .adcard-google-title{font-size:.85rem;font-weight:400;color:#1a0dab;line-height:1.3;margin-bottom:.05rem;text-decoration:underline}
+  .adcard-google-title2{font-size:.85rem;font-weight:400;color:#1a0dab;line-height:1.3;margin-bottom:.38rem;text-decoration:underline}
+  .adcard-google-desc{font-size:.67rem;color:#4d5156;line-height:1.5;margin-bottom:.5rem}
+  .adcard-sitelinks{display:flex;flex-wrap:wrap;gap:.28rem}
+  .adcard-sitelinks span{font-size:.6rem;color:#1a0dab;border:1px solid #dadce0;border-radius:100px;padding:.18rem .5rem;text-decoration:underline}
+  .adcard--youtube{transform:rotate(3deg);background:#fff;margin-top:2.5rem;width:210px}
+  .adcard-yt-thumb{width:100%;height:118px;background:linear-gradient(160deg,#0f0f0f,#1a1a2e);position:relative;display:flex;align-items:center;justify-content:center}
+  .adcard-yt-play{width:36px;height:36px;background:rgba(255,0,0,.9);border-radius:50%;display:flex;align-items:center;justify-content:center}
+  .adcard-yt-skip{position:absolute;bottom:.4rem;right:.4rem;background:rgba(0,0,0,.7);color:#fff;font-size:.52rem;padding:.18rem .4rem;border-radius:3px}
+  .adcard-yt-adlabel{position:absolute;top:.4rem;left:.4rem;background:rgba(0,0,0,.65);color:#fff;font-size:.52rem;padding:.15rem .35rem;border-radius:3px}
+  .adcard-yt-body{padding:.55rem .7rem .65rem;background:#fff}
+  .adcard-yt-title{font-size:.72rem;font-weight:600;color:#0f0f0f;line-height:1.3;margin-bottom:.2rem}
+  .adcard-yt-meta{font-size:.58rem;color:#606060}
+  .adcard--tiktok{transform:rotate(-1.5deg);background:#000;width:165px;margin-top:.5rem;color:#fff}
+  .adcard-tt-video{width:100%;height:200px;background:linear-gradient(170deg,#010101,#1a0a2e,#0a0a1a);position:relative;overflow:hidden}
+  .adcard-tt-sidebar{position:absolute;right:.5rem;bottom:2.5rem;display:flex;flex-direction:column;align-items:center;gap:.7rem}
+  .adcard-tt-action{display:flex;flex-direction:column;align-items:center;gap:.1rem;font-size:.52rem;color:#fff}
+  .adcard-tt-disc{width:20px;height:20px;border-radius:50%;background:linear-gradient(135deg,#161616,#444);border:2px solid #888;animation:spin 3s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .adcard-tt-bottom{position:absolute;bottom:0;left:0;right:0;padding:.5rem .6rem;background:linear-gradient(transparent,rgba(0,0,0,.8))}
+  .adcard-tt-footer{padding:.4rem .6rem .55rem;background:#000;display:flex;align-items:center;justify-content:space-between}
+  @media(max-width:760px){
+    .ads-stage{gap:2rem 1rem;padding-bottom:2rem}
+    .adcard{transform:rotate(0deg)!important;width:calc(50% - .5rem);max-width:220px}
+    .adcard--tiktok{width:calc(50% - .5rem);max-width:180px}
+    .ads-chip--3,.ads-chip--4,.ads-chip--5{display:none}
+  }
+  @media(max-width:480px){
+    .adcard,.adcard--tiktok{width:100%;max-width:280px}
+  }
 </style>
 </head>
 <body>
@@ -958,6 +1047,154 @@
         </div>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- TRAFFIC MOCKUPS -->
+<section id="trafego-mockup" style="overflow:hidden">
+  <div class="container">
+    <span class="eyebrow reveal">tráfego pago</span>
+    <h2 class="reveal">Seus anúncios onde<br>o cliente já está</h2>
+    <p class="lead reveal" style="margin-bottom:3rem">Meta Ads e Google Ads configurados, otimizados e acompanhados. Sem achismo, sem verba desperdiçada.</p>
+
+        <div class="ads-stage reveal">
+
+      <div class="ads-chip ads-chip--1">CTR 4,2% &uarr;</div>
+      <div class="ads-chip ads-chip--2">ROAS 4,8&times;</div>
+      <div class="ads-chip ads-chip--3">CPC R$&nbsp;0,38</div>
+      <div class="ads-chip ads-chip--4">Conv. 8,1%</div>
+      <div class="ads-chip ads-chip--5">CPL R$&nbsp;11</div>
+
+      <!-- FACEBOOK -->
+      <div class="adcard adcard--meta">
+        <div class="adcard-topbar">
+          <div class="adcard-platform">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="#1877f2"><path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.236 2.686.236v2.97h-1.513c-1.491 0-1.956.93-1.956 1.886v2.267h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/></svg>
+            <span>Facebook</span>
+          </div>
+          <div class="adcard-sponsored">Patrocinado</div>
+        </div>
+        <div class="adcard-img-meta">
+          <div class="adcard-img-overlay">
+            <div style="font-size:.68rem;font-weight:700;color:#fff;line-height:1.2;margin-bottom:.25rem">Oferta especial so hoje</div>
+            <div style="font-size:.54rem;color:rgba(255,255,255,.85)">Garanta antes que acabe</div>
+          </div>
+        </div>
+        <div class="adcard-body">
+          <div class="adcard-site">seusite.com.br</div>
+          <div class="adcard-headline">Descubra o que faltava no seu negocio</div>
+          <button class="adcard-cta-fb">Saiba mais</button>
+        </div>
+        <div class="adcard-reactions">
+          <span>&#x1F44D; 1,4 mil</span>
+          <span style="margin-left:auto">&#x1F4AC; 87 &nbsp; &#x21A5; 203</span>
+        </div>
+      </div>
+
+      <!-- INSTAGRAM -->
+      <div class="adcard adcard--insta">
+        <div class="adcard-insta-header">
+          <div style="display:flex;align-items:center;gap:.4rem">
+            <div style="width:22px;height:22px;border-radius:6px;background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);flex-shrink:0;display:flex;align-items:center;justify-content:center"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="#fff" stroke="none"/></svg></div>
+            <div>
+              <div style="font-size:.65rem;font-weight:700;color:#262626;line-height:1.1">seunegogio</div>
+              <div style="font-size:.55rem;color:#8e8e8e">Patrocinado &bull;</div>
+            </div>
+          </div>
+          <div style="font-size:.9rem;color:#262626;letter-spacing:.05em">&#xB7;&#xB7;&#xB7;</div>
+        </div>
+        <div class="adcard-insta-img">
+          <div class="adcard-img-overlay">
+            <div style="font-size:.68rem;font-weight:700;color:#fff;line-height:1.2;margin-bottom:.2rem">Resultado real,<br>sem enrolacao.</div>
+          </div>
+        </div>
+        <div class="adcard-insta-actions">
+          <span>&#x2665;</span><span>&#x1F4AC;</span><span>&#x21A5;</span>
+          <span style="margin-left:auto">&#x1F516;</span>
+        </div>
+        <div class="adcard-insta-caption">
+          <strong>seunegogio</strong> Sua oferta aqui. Clique no link da bio e saiba mais. <span style="color:#00376b">#publicidade #resultado</span>
+        </div>
+        <div style="padding:.3rem .65rem .55rem;background:#fff">
+          <button class="adcard-cta-ig" style="font-size:.64rem;padding:.32rem 1rem">Saiba mais</button>
+        </div>
+      </div>
+
+      <!-- GOOGLE -->
+      <div class="adcard adcard--google">
+        <div class="adcard-google-top">
+          <div style="display:flex;align-items:center;gap:.4rem;margin-bottom:.55rem">
+            <svg width="15" height="15" viewBox="0 0 24 24"><path fill="#4285f4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34a853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#fbbc05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#ea4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+            <span style="font-size:.63rem;color:#5f6368">Google</span>
+          </div>
+          <div class="adcard-google-label">Anuncio</div>
+          <div class="adcard-google-url">seusite.com.br/oferta</div>
+          <div class="adcard-google-title">Solucao que Voce Procura &middot; Resultado em Dias</div>
+          <div class="adcard-google-title2">Atendimento Rapido &middot; Fale Agora &middot; Sem Burocracia</div>
+          <div class="adcard-google-desc">Mais de 200 clientes atendidos. Resultado comprovado sem enrolacao. Clique, conheca e decida com calma.</div>
+          <div class="adcard-sitelinks">
+            <span>Sobre nos</span><span>Servicos</span><span>Contato</span><span>Precos</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- YOUTUBE -->
+      <div class="adcard adcard--youtube">
+        <div class="adcard-yt-thumb">
+          <div class="adcard-yt-adlabel">Anuncio</div>
+          <div class="adcard-yt-play">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="#fff"><polygon points="5,3 19,12 5,21"/></svg>
+          </div>
+          <div class="adcard-yt-skip">Pular em 5s &rarr;</div>
+        </div>
+        <div class="adcard-yt-body">
+          <div class="adcard-yt-title">Como resolvi meu problema em menos de 7 dias</div>
+          <div style="display:flex;align-items:center;gap:.4rem;margin:.3rem 0">
+            <div style="width:18px;height:18px;border-radius:50%;background:#ff0000;flex-shrink:0"></div>
+            <div style="font-size:.6rem;color:#606060">Canal da Marca &bull; 1,2k views</div>
+          </div>
+          <div style="border-top:1px solid #e5e5e5;padding-top:.35rem;display:flex;align-items:center;gap:.35rem">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#606060" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+            <span style="font-size:.6rem;color:#606060">seusite.com.br</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- TIKTOK -->
+      <div class="adcard adcard--tiktok">
+        <div class="adcard-tt-video">
+          <div style="position:absolute;top:.6rem;left:.6rem;display:flex;align-items:center;gap:.3rem">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#fff"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.32 6.32 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.19 8.19 0 004.79 1.52V6.76a4.85 4.85 0 01-1.02-.07z"/></svg>
+            <span style="font-size:.6rem;color:#fff;font-weight:600">TikTok</span>
+          </div>
+          <div class="adcard-tt-sidebar">
+            <div class="adcard-tt-action">
+              <span style="font-size:1rem">&#x2665;</span>
+              <span>24k</span>
+            </div>
+            <div class="adcard-tt-action">
+              <span style="font-size:.9rem">&#x1F4AC;</span>
+              <span>1,2k</span>
+            </div>
+            <div class="adcard-tt-action">
+              <span style="font-size:.9rem">&#x21A5;</span>
+              <span>890</span>
+            </div>
+            <div class="adcard-tt-disc"></div>
+          </div>
+          <div class="adcard-tt-bottom">
+            <div style="font-size:.6rem;color:#fff;font-weight:600;margin-bottom:.15rem">@seunegogio</div>
+            <div style="font-size:.55rem;color:rgba(255,255,255,.8);margin-bottom:.3rem">#publicidade #resultado #oferta</div>
+            <div style="background:#fe2c55;color:#fff;font-size:.58rem;font-weight:700;padding:.3rem .7rem;border-radius:4px;display:inline-block;text-align:center;width:100%">Saiba mais</div>
+          </div>
+        </div>
+        <div class="adcard-tt-footer">
+          <span style="font-size:.58rem;color:#aaa">Publicidade</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="#fff" opacity=".5"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.32 6.32 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.19 8.19 0 004.79 1.52V6.76a4.85 4.85 0 01-1.02-.07z"/></svg>
+        </div>
+      </div>
+
+    </div>    </div>
   </div>
 </section>
 
