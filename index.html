@@ -515,40 +515,11 @@
 
     footer{flex-direction:column;align-items:flex-start}
 
-    /* ads carrossel */
-    #trafego-mockup{padding:3.5rem 0;overflow:hidden}
-    #trafego-mockup .container{padding:0;max-width:none;width:100%}
-    #trafego-mockup .container>.eyebrow,
-    #trafego-mockup .container>h2,
-    #trafego-mockup .container>.lead{padding-left:1.4rem;padding-right:1.4rem}
-    .ads-stage{
-      display:flex!important;
-      flex-wrap:nowrap!important;
-      overflow-x:scroll;
-      overflow-y:hidden;
-      justify-content:flex-start;
-      scroll-snap-type:x mandatory;
-      -webkit-overflow-scrolling:touch;
-      padding:1.5rem 1.4rem 2.5rem;
-      gap:1.2rem;
-      cursor:grab;
-      scrollbar-width:none;
-      width:100%;
-      box-sizing:border-box;
-      position:relative;
-    }
-    .ads-stage::-webkit-scrollbar{display:none}
-    .adcard{
-      scroll-snap-align:start;
-      flex-shrink:0!important;
-      width:180px!important;
-      transform:rotate(0deg)!important;
-      margin-top:0!important;
-      min-width:180px;
-    }
-    .adcard--tiktok{width:150px!important;min-width:150px}
-    .adcard--youtube{width:180px!important;min-width:180px}
+    /* ads marquee mobile */
+    #trafego-mockup{padding:3rem 0}
+    .ads-stage{padding:2rem 0 3.5rem}
     .ads-chip{display:none}
+    .adcard{margin-top:0!important}
   }
   @media(max-width:480px){
     .hero{padding:5rem 1.2rem 2.5rem}
@@ -567,16 +538,32 @@
   .hero .hero-actions{animation-delay:.38s}
 
   /* ── ADS STAGE ── */
-  .ads-stage{position:relative;display:flex;justify-content:center;align-items:flex-start;flex-wrap:wrap;gap:1.8rem 1.5rem;padding:2.5rem 0 5rem}
-  .ads-chip{position:absolute;background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:.35rem .85rem;font-size:.75rem;font-weight:600;color:var(--accent);white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,.3);pointer-events:none;z-index:3}
-  .ads-chip--1{top:-18px;left:0;transform:rotate(-4deg)}
-  .ads-chip--2{top:-14px;right:0;transform:rotate(3deg);color:#4ade80}
-  .ads-chip--3{bottom:-18px;left:0;transform:rotate(2deg);color:#a78bfa}
-  .ads-chip--4{bottom:-14px;right:0;transform:rotate(-3deg);color:#fbbf24}
-  .ads-chip--5{top:42%;left:-8px;transform:rotate(-2deg);color:#7dd3fc}
+  @keyframes marquee-left{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  .ads-stage{
+    position:relative;
+    overflow:hidden;
+    padding:3rem 0 4.5rem;
+    /* fade edges */
+    -webkit-mask-image:linear-gradient(to right,transparent 0%,#000 8%,#000 92%,transparent 100%);
+    mask-image:linear-gradient(to right,transparent 0%,#000 8%,#000 92%,transparent 100%);
+  }
+  .ads-track{
+    display:flex;
+    align-items:flex-start;
+    gap:1.5rem;
+    width:max-content;
+    animation:marquee-left 28s linear infinite;
+  }
+  .ads-stage:hover .ads-track{animation-play-state:paused}
+  .ads-chip{position:absolute;background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:.35rem .85rem;font-size:.75rem;font-weight:600;color:var(--accent);white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,.3);pointer-events:none;z-index:10}
+  .ads-chip--1{top:12px;left:6%;transform:rotate(-4deg)}
+  .ads-chip--2{top:12px;right:6%;transform:rotate(3deg);color:#4ade80}
+  .ads-chip--3{bottom:16px;left:6%;transform:rotate(2deg);color:#a78bfa}
+  .ads-chip--4{bottom:16px;right:6%;transform:rotate(-3deg);color:#fbbf24}
+  .ads-chip--5{top:50%;left:2%;transform:translateY(-50%) rotate(-2deg);color:#7dd3fc}
   .adcard{position:relative;z-index:1;border-radius:14px;overflow:hidden;width:200px;flex-shrink:0;box-shadow:0 20px 55px rgba(0,0,0,.5);transition:transform .3s,box-shadow .3s}
-  .adcard:hover{transform:translateY(-8px) rotate(0deg)!important;box-shadow:0 32px 80px rgba(0,0,0,.65)}
-  .adcard--meta{transform:rotate(-3deg);background:#fff;margin-top:2rem}
+  .adcard:hover{transform:translateY(-10px) scale(1.03)!important;box-shadow:0 32px 80px rgba(0,0,0,.65)}
+  .adcard--meta{transform:rotate(-2deg);background:#fff;margin-top:2rem}
   .adcard-topbar{display:flex;align-items:center;justify-content:space-between;padding:.55rem .7rem .35rem;background:#fff}
   .adcard-platform{display:flex;align-items:center;gap:.35rem;font-size:.68rem;font-weight:600;color:#1c1c1c}
   .adcard-sponsored{font-size:.58rem;color:#65676b;background:#f0f2f5;padding:.18rem .45rem;border-radius:4px}
@@ -619,13 +606,11 @@
   .adcard-tt-bottom{position:absolute;bottom:0;left:0;right:0;padding:.5rem .6rem;background:linear-gradient(transparent,rgba(0,0,0,.8))}
   .adcard-tt-footer{padding:.4rem .6rem .55rem;background:#000;display:flex;align-items:center;justify-content:space-between}
   @media(max-width:760px){
-    .ads-stage{gap:2rem 1rem;padding-bottom:2rem}
-    .adcard{transform:rotate(0deg)!important;width:calc(50% - .5rem);max-width:220px}
-    .adcard--tiktok{width:calc(50% - .5rem);max-width:180px}
+    .ads-track{gap:1rem}
+    .adcard{width:170px}
+    .adcard--tiktok{width:145px}
+    .adcard--youtube{width:170px}
     .ads-chip--3,.ads-chip--4,.ads-chip--5{display:none}
-  }
-  @media(max-width:480px){
-    .adcard,.adcard--tiktok{width:100%;max-width:280px}
   }
 </style>
 </head>
@@ -1093,7 +1078,7 @@
     <h2 class="reveal">Seus anúncios onde<br>o cliente já está</h2>
     <p class="lead reveal" style="margin-bottom:3rem">Meta Ads e Google Ads configurados, otimizados e acompanhados. Sem achismo, sem verba desperdiçada.</p>
 
-        <div class="ads-stage reveal">
+        <div class="ads-stage">
 
       <div class="ads-chip ads-chip--1">CTR 4,2% &uarr;</div>
       <div class="ads-chip ads-chip--2">ROAS 4,8&times;</div>
@@ -1101,6 +1086,7 @@
       <div class="ads-chip ads-chip--4">Conv. 8,1%</div>
       <div class="ads-chip ads-chip--5">CPL R$&nbsp;11</div>
 
+      <div class="ads-track" id="adsTrack">
       <!-- FACEBOOK -->
       <div class="adcard adcard--meta">
         <div class="adcard-topbar">
@@ -1230,8 +1216,9 @@
         </div>
       </div>
 
-    </div>    </div>
-  </div>
+      </div><!-- /ads-track -->
+    </div><!-- /ads-stage -->
+  </div><!-- /container -->
 </section>
 
 <!-- HOW IT WORKS -->
@@ -1379,6 +1366,17 @@
     entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')});
   },{threshold:.1});
   document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+  /* ── MARQUEE INFINITO ── */
+  (function(){
+    const track = document.getElementById('adsTrack');
+    if(!track) return;
+    // Clona a track para loop perfeito
+    const clone = track.cloneNode(true);
+    clone.setAttribute('aria-hidden','true');
+    clone.removeAttribute('id');
+    track.parentElement.appendChild(clone);
+  })();
 </script>
 </body>
 </html>
