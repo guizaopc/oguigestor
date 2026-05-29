@@ -543,16 +543,16 @@
     position:relative;
     overflow:hidden;
     padding:3rem 0 4.5rem;
-    /* fade edges */
     -webkit-mask-image:linear-gradient(to right,transparent 0%,#000 8%,#000 92%,transparent 100%);
     mask-image:linear-gradient(to right,transparent 0%,#000 8%,#000 92%,transparent 100%);
   }
+  /* wrapper que segura original + clone e desliza */
   .ads-track{
     display:flex;
     align-items:flex-start;
     gap:1.5rem;
     width:max-content;
-    animation:marquee-left 28s linear infinite;
+    animation:marquee-left 32s linear infinite;
   }
   .ads-stage:hover .ads-track{animation-play-state:paused}
   .ads-chip{position:absolute;background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:.35rem .85rem;font-size:.75rem;font-weight:600;color:var(--accent);white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,.3);pointer-events:none;z-index:10}
@@ -1371,11 +1371,14 @@
   (function(){
     const track = document.getElementById('adsTrack');
     if(!track) return;
-    // Clona a track para loop perfeito
-    const clone = track.cloneNode(true);
-    clone.setAttribute('aria-hidden','true');
-    clone.removeAttribute('id');
-    track.parentElement.appendChild(clone);
+    // Duplica os cards DENTRO da mesma track para o loop ser perfeito
+    const cards = Array.from(track.children);
+    cards.forEach(card => {
+      const clone = card.cloneNode(true);
+      clone.setAttribute('aria-hidden','true');
+      track.appendChild(clone);
+    });
+    // A animação translateX(-50%) move exatamente um set de cards (metade da largura total)
   })();
 </script>
 </body>
