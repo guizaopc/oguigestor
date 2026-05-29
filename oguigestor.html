@@ -1,0 +1,1112 @@
+﻿﻿﻿﻿﻿﻿﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gui Gestor | Tráfego Pago · Automações · Sites</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#0a0a0f;
+    --surface:#111118;
+    --surface2:#18181f;
+    --border:#ffffff12;
+    --accent:#01a1fe;
+    --accent2:#7c5cfc;
+    --text:#f0eeff;
+    --muted:#8885a3;
+    --card-bg:#13131a;
+  }
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'DM Sans',sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    overflow-x:hidden;
+  }
+  body::before{
+    content:'';
+    position:fixed;inset:0;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events:none;z-index:0;opacity:.6;
+  }
+
+  /* NAV */
+  nav{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    padding:1.2rem 2rem;
+    display:flex;align-items:center;justify-content:space-between;
+    border-bottom:1px solid var(--border);
+    backdrop-filter:blur(12px);
+    background:rgba(10,10,15,.8);
+  }
+  .logo{
+    font-family:'Syne',sans-serif;font-weight:800;font-size:1.3rem;
+    letter-spacing:-.02em;color:var(--text);text-decoration:none;
+  }
+  .logo span{color:var(--accent)}
+  nav ul{list-style:none;display:flex;gap:2rem}
+  nav a{color:var(--muted);text-decoration:none;font-size:.9rem;transition:color .2s}
+  nav a:hover{color:var(--text)}
+  .nav-cta{
+    background:var(--accent);color:#0a0a0f!important;
+    padding:.5rem 1.2rem;border-radius:100px;font-weight:500;transition:opacity .2s!important;
+  }
+  .nav-cta:hover{opacity:.85}
+
+  /* HAMBURGER */
+  .hamburger{
+    display:none;flex-direction:column;gap:5px;
+    background:none;border:none;cursor:pointer;padding:.4rem;z-index:101;
+  }
+  .hamburger span{display:block;width:24px;height:2px;background:var(--text);border-radius:2px;transition:transform .3s,opacity .3s}
+  .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+  .hamburger.open span:nth-child(2){opacity:0}
+  .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+  /* MOBILE MENU */
+  .mobile-menu{
+    display:none;position:fixed;inset:0;
+    background:rgba(10,10,15,.97);backdrop-filter:blur(20px);
+    z-index:99;flex-direction:column;align-items:center;justify-content:center;gap:2.5rem;
+  }
+  .mobile-menu.open{display:flex}
+  .mobile-menu a{
+    font-family:'Syne',sans-serif;font-size:2rem;font-weight:700;
+    color:var(--muted);text-decoration:none;transition:color .2s;letter-spacing:-.02em;
+  }
+  .mobile-menu a:hover{color:var(--text)}
+  .mobile-menu .nav-cta{background:var(--accent);color:#0a0a0f!important;padding:.8rem 2rem;border-radius:100px;font-size:1.2rem}
+
+  /* HERO */
+  .hero{
+    min-height:100vh;
+    display:flex;align-items:center;justify-content:center;
+    text-align:center;padding:8rem 2rem 4rem;position:relative;
+  }
+  .hero-glow{
+    position:absolute;top:20%;left:50%;transform:translateX(-50%);
+    width:700px;height:500px;
+    background:radial-gradient(ellipse,rgba(124,92,252,.18) 0%,transparent 70%);
+    pointer-events:none;
+  }
+  .hero-glow2{
+    position:absolute;bottom:10%;right:10%;width:400px;height:300px;
+    background:radial-gradient(ellipse,rgba(1,161,254,.07) 0%,transparent 70%);
+    pointer-events:none;
+  }
+  .avail-pill{
+    display:inline-flex;align-items:center;gap:.5rem;
+    border:1px solid var(--border);border-radius:100px;
+    padding:.35rem .9rem;font-size:.8rem;color:var(--muted);
+    margin-bottom:2.2rem;
+  }
+  .avail-dot{width:7px;height:7px;border-radius:50%;background:#4ade80;box-shadow:0 0 6px #4ade8088;animation:pulse 2.5s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+
+  h1{
+    font-family:'Syne',sans-serif;
+    font-size:clamp(2.8rem,7.5vw,5.5rem);
+    font-weight:800;line-height:.97;
+    letter-spacing:-.04em;margin-bottom:1.6rem;
+  }
+  h1 em{font-style:normal;color:var(--accent)}
+  .hero-sub{
+    font-size:1.1rem;color:var(--muted);
+    max-width:500px;margin:0 auto 2.5rem;
+    line-height:1.65;font-weight:300;
+  }
+  .hero-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+
+  .btn-primary{
+    background:var(--accent);color:#0a0a0f;
+    padding:.85rem 2rem;border-radius:100px;
+    font-weight:600;font-size:.95rem;text-decoration:none;
+    transition:transform .2s,box-shadow .2s;
+    display:inline-flex;align-items:center;gap:.4rem;
+  }
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(1,161,254,.2)}
+  .btn-ghost{
+    border:1px solid var(--border);color:var(--text);
+    padding:.85rem 2rem;border-radius:100px;font-size:.95rem;
+    text-decoration:none;transition:border-color .2s,background .2s;
+    display:inline-flex;align-items:center;gap:.4rem;
+  }
+  .btn-ghost:hover{border-color:#ffffff35;background:#ffffff07}
+
+  /* STATS */
+  .stats{
+    display:flex;justify-content:center;
+    border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+    background:var(--surface);
+  }
+  .stat{
+    flex:0 1 220px;padding:2rem 1.5rem;
+    text-align:center;border-right:1px solid var(--border);
+  }
+  .stat:last-child{border-right:none}
+  .stat-num{
+    font-family:'Syne',sans-serif;font-size:2.2rem;font-weight:800;
+    color:var(--accent);display:block;letter-spacing:-.03em;
+  }
+  .stat-label{font-size:.82rem;color:var(--muted);margin-top:.3rem}
+
+  /* SECTIONS */
+  section{padding:6rem 2rem;position:relative}
+  .container{max-width:1100px;margin:0 auto}
+  .eyebrow{
+    font-size:.72rem;font-weight:600;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--accent);margin-bottom:.9rem;display:block;
+  }
+  h2{
+    font-family:'Syne',sans-serif;
+    font-size:clamp(1.9rem,4.5vw,3rem);
+    font-weight:800;letter-spacing:-.03em;line-height:1.06;margin-bottom:1rem;
+  }
+  .lead{color:var(--muted);font-size:1rem;max-width:460px;line-height:1.65;margin-bottom:3.5rem}
+
+  /* SERVICES GRID */
+  .services-grid{
+    display:grid;grid-template-columns:repeat(3,1fr);
+    gap:1.5px;background:var(--border);
+    border:1px solid var(--border);border-radius:16px;overflow:hidden;
+  }
+  .service-card{
+    background:var(--card-bg);padding:2.2rem;
+    display:flex;flex-direction:column;
+    transition:background .25s;cursor:pointer;
+  }
+  .service-card:hover{background:#16161f}
+  .svc-icon{
+    width:44px;height:44px;border-radius:10px;
+    display:flex;align-items:center;justify-content:center;
+    margin-bottom:1.4rem;
+  }
+  .svc-icon svg{width:22px;height:22px}
+  .icon-traffic{background:rgba(1,161,254,.08)}
+  .icon-traffic svg{stroke:var(--accent)}
+  .icon-auto{background:rgba(124,92,252,.12)}
+  .icon-auto svg{stroke:#a78bfa}
+  .icon-sites{background:rgba(56,189,248,.08)}
+  .icon-sites svg{stroke:#7dd3fc}
+
+  .service-card h3{
+    font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:700;
+    margin-bottom:.65rem;letter-spacing:-.02em;
+  }
+  .service-card > p{color:var(--muted);font-size:.9rem;line-height:1.6;margin-bottom:1.2rem}
+  .service-tags{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:0}
+  .tag{
+    font-size:.7rem;font-weight:500;padding:.22rem .55rem;
+    border-radius:100px;border:1px solid var(--border);color:var(--muted);
+  }
+
+  /* CARD EXPAND */
+  .card-toggle{
+    display:flex;align-items:center;gap:.35rem;
+    font-size:.78rem;color:var(--muted);
+    margin-top:auto;padding-top:1.2rem;
+    transition:color .2s;user-select:none;
+  }
+  .toggle-icon{
+    width:18px;height:18px;border-radius:50%;
+    border:1px solid var(--border);
+    display:inline-flex;align-items:center;justify-content:center;
+    font-size:.6rem;
+    transition:transform .35s,border-color .2s;
+  }
+  .service-card.open .toggle-icon{transform:rotate(180deg);border-color:#ffffff28}
+  .service-card.open .card-toggle{color:var(--text)}
+
+  .card-expand{
+    max-height:0;overflow:hidden;opacity:0;margin-top:0;
+    transition:max-height .45s ease,opacity .35s ease,margin-top .35s ease;
+  }
+  .service-card.open .card-expand{max-height:420px;opacity:1;margin-top:1.4rem}
+  .expand-inner{border-top:1px solid var(--border);padding-top:1.3rem;display:flex;flex-direction:column;gap:.9rem}
+  .expand-inner ul{list-style:none;display:flex;flex-direction:column;gap:.5rem}
+  .expand-inner li{
+    font-size:.86rem;color:var(--muted);
+    display:flex;align-items:flex-start;gap:.45rem;line-height:1.5;
+  }
+  .expand-inner li::before{
+    content:'"”';color:var(--accent);font-size:.75rem;
+    margin-top:.15rem;flex-shrink:0;
+  }
+  .card-cta{
+    display:inline-flex;align-items:center;gap:.4rem;
+    background:var(--accent);color:#0a0a0f;
+    padding:.55rem 1.2rem;border-radius:100px;
+    font-weight:600;font-size:.8rem;
+    text-decoration:none;width:fit-content;
+    transition:opacity .2s,transform .2s;
+  }
+  .card-cta:hover{opacity:.85;transform:translateY(-1px)}
+
+  /* HOW IT WORKS */
+  .steps{display:flex;position:relative;flex-wrap:wrap}
+  .steps::before{
+    content:'';position:absolute;top:24px;left:24px;right:24px;
+    height:1px;background:linear-gradient(90deg,transparent,var(--border) 20%,var(--border) 80%,transparent);
+  }
+  .step{flex:1;min-width:200px;padding:0 1.5rem;text-align:center;position:relative}
+  .step-num{
+    width:48px;height:48px;border-radius:50%;
+    border:1px solid var(--border);background:var(--surface2);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Syne',sans-serif;font-weight:800;font-size:.95rem;
+    margin:0 auto 1.2rem;position:relative;z-index:1;color:var(--accent);
+  }
+  .step h4{font-family:'Syne',sans-serif;font-weight:700;font-size:.95rem;margin-bottom:.45rem}
+  .step p{font-size:.84rem;color:var(--muted);line-height:1.55}
+
+  /* RESULTS */
+  .results-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+  .result-card{
+    background:var(--card-bg);border:1px solid var(--border);
+    border-radius:14px;padding:1.8rem;
+    transition:border-color .3s,transform .3s;
+  }
+  .result-card:hover{border-color:#ffffff1a;transform:translateY(-3px)}
+  .result-icon{margin-bottom:1rem}
+  .result-icon svg{width:28px;height:28px}
+  .result-card h4{
+    font-family:'Syne',sans-serif;font-weight:700;
+    font-size:1.05rem;letter-spacing:-.02em;margin-bottom:.5rem;
+  }
+  .result-card p{font-size:.85rem;color:var(--muted);line-height:1.6}
+
+  /* SITE SHOWCASE */
+  .showcase-tabs{
+    display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:2rem;
+  }
+  .stab{
+    padding:.55rem 1.2rem;border-radius:100px;
+    border:1px solid var(--border);
+    font-size:.88rem;font-weight:500;color:var(--muted);
+    cursor:pointer;background:none;
+    transition:all .2s;
+  }
+  .stab:hover{border-color:#ffffff28;color:var(--text)}
+  .stab.active{background:var(--accent);border-color:var(--accent);color:#0a0a0f;font-weight:600}
+
+  .showcase-wrap{
+    display:grid;grid-template-columns:1fr 340px;gap:3rem;align-items:start;
+  }
+  .browser{
+    border:1px solid var(--border);border-radius:12px;overflow:hidden;
+    background:#0d0d14;
+  }
+  .browser-bar{
+    background:var(--surface2);padding:.6rem 1rem;
+    display:flex;align-items:center;gap:.6rem;
+    border-bottom:1px solid var(--border);
+  }
+  .browser-dot{width:10px;height:10px;border-radius:50%}
+  .browser-dot:nth-child(1){background:#ff5f57}
+  .browser-dot:nth-child(2){background:#febc2e}
+  .browser-dot:nth-child(3){background:#28c840}
+  .browser-url{
+    flex:1;background:var(--surface);border-radius:6px;
+    padding:.28rem .8rem;font-size:.72rem;color:var(--muted);margin-left:.4rem;
+  }
+  .browser-content{padding:0;min-height:340px;overflow:hidden;display:flex;flex-direction:column}
+
+  /* MOCKUP PANELS */
+  .mock-panel{display:none;flex-direction:column;flex:1}
+  .mock-panel.active{display:flex}
+
+  /* MINI SITE STYLES */
+  .ms{font-size:.52rem;line-height:1.4;color:#c8c4e0;font-family:'Inter',sans-serif}
+  .ms-nav{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:.55rem .8rem;border-bottom:1px solid #ffffff0d;background:#0d0d18;
+  }
+  .ms-logo{font-weight:800;font-size:.7rem;color:#f0eeff;font-family:'Inter',sans-serif;font-weight:700;letter-spacing:-.02em}
+  .ms-logo span{color:#01a1fe}
+  .ms-nav-links{display:flex;gap:.5rem;align-items:center}
+  .ms-nav-links a{color:#8885a3;font-size:.48rem;text-decoration:none}
+  .ms-cta-sm{
+    background:#01a1fe;color:#0a0a0f;
+    padding:.25rem .55rem;border-radius:100px;
+    font-size:.48rem;font-weight:700;
+  }
+  .ms-hero{
+    display:grid;grid-template-columns:1fr 1fr;gap:.8rem;
+    padding:.8rem .8rem .6rem;align-items:stretch;flex:1;
+  }
+  .ms-img{border-radius:6px;overflow:hidden;background:#13131a;border:1px solid #ffffff0d;min-height:110px;height:100%}
+  .ms-badge{
+    display:inline-block;background:rgba(1,161,254,.12);
+    color:#01a1fe;font-size:.44rem;font-weight:600;
+    padding:.15rem .4rem;border-radius:100px;margin-bottom:.35rem;
+  }
+  .ms-h1{font-family:'Inter',sans-serif;font-weight:800;font-size:.85rem;line-height:1.15;color:#f0eeff;margin-bottom:.3rem;letter-spacing:-.02em}
+  .ms-h1 em{color:#01a1fe;font-style:normal}
+  .ms-p{font-size:.46rem;color:#8885a3;line-height:1.5;margin-bottom:.4rem}
+  .ms-btns{display:flex;gap:.3rem;flex-wrap:wrap}
+  .ms-btn{background:#01a1fe;color:#0a0a0f;padding:.28rem .6rem;border-radius:100px;font-size:.46rem;font-weight:700}
+  .ms-btn-o{border:1px solid #ffffff20;color:#f0eeff;padding:.28rem .6rem;border-radius:100px;font-size:.46rem}
+  .ms-img{border-radius:6px;overflow:hidden;background:#13131a;border:1px solid #ffffff0d}
+  .ms-features{
+    display:grid;grid-template-columns:1fr 1fr 1fr;
+    border-top:1px solid #ffffff0d;
+  }
+  .ms-feat{padding:.5rem .6rem;border-right:1px solid #ffffff0d}
+  .ms-feat:last-child{border-right:none}
+  .ms-feat-icon{
+    width:14px;height:14px;border-radius:4px;
+    display:flex;align-items:center;justify-content:center;
+    margin-bottom:.25rem;font-size:.5rem;
+  }
+  .ms-feat h4{font-size:.5rem;font-weight:700;color:#f0eeff;margin-bottom:.15rem;font-family:'Syne',sans-serif}
+  .ms-feat p{font-size:.42rem;color:#8885a3;line-height:1.4}
+
+  /* DASH MINI */
+  .ms-dash{display:flex;height:100%}
+  .ms-sidebar{
+    width:52px;background:#0a0a12;border-right:1px solid #ffffff0d;
+    display:flex;flex-direction:column;gap:.3rem;padding:.5rem .3rem;flex-shrink:0;
+  }
+  .ms-sidebar-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:.55rem;color:#f0eeff;margin-bottom:.2rem;padding:0 .1rem}
+  .ms-sidebar-logo span{color:#01a1fe}
+  .ms-nav-item{
+    height:14px;border-radius:3px;background:#ffffff08;
+    display:flex;align-items:center;padding:0 .3rem;gap:.2rem;font-size:.38rem;color:#8885a3;
+  }
+  .ms-nav-item.act{background:rgba(1,161,254,.15);color:#01a1fe}
+  .ms-nav-dot{width:5px;height:5px;border-radius:50%;background:currentColor;flex-shrink:0}
+  .ms-main{flex:1;display:flex;flex-direction:column;padding:.5rem .6rem;gap:.4rem;overflow:hidden}
+  .ms-topbar{display:flex;justify-content:space-between;align-items:center}
+  .ms-topbar h3{font-family:'Inter',sans-serif;font-size:.6rem;font-weight:700;color:#f0eeff}
+  .ms-avatar{width:16px;height:16px;border-radius:50%;background:linear-gradient(135deg,#7c5cfc,#01a1fe)}
+  .ms-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:.35rem}
+  .ms-kpi{background:#ffffff07;border-radius:5px;padding:.35rem .4rem}
+  .ms-kpi-val{font-family:'Inter',sans-serif;font-size:.7rem;font-weight:800;color:#01a1fe;line-height:1}
+  .ms-kpi-val.purple{color:#a78bfa}
+  .ms-kpi-val.blue{color:#7dd3fc}
+  .ms-kpi-lbl{font-size:.38rem;color:#8885a3;margin-top:.1rem}
+  .ms-chart-wrap{display:grid;grid-template-columns:1fr 1fr;gap:.35rem;flex:1;min-height:0}
+  .ms-chart{background:#ffffff06;border-radius:5px;padding:.35rem .4rem;display:flex;flex-direction:column}
+  .ms-chart-title{font-size:.42rem;color:#8885a3;margin-bottom:.25rem}
+  .ms-bars{display:flex;align-items:flex-end;gap:.2rem;flex:1}
+  .ms-bar{flex:1;border-radius:2px 2px 0 0;background:#ffffff10;min-height:4px}
+  .ms-bar.hi{background:#7c5cfc}
+  .ms-line-chart{background:#ffffff06;border-radius:5px;padding:.35rem .4rem}
+  .ms-line-chart-title{font-size:.42rem;color:#8885a3;margin-bottom:.2rem}
+  .ms-line-svg{width:100%;height:28px}
+  .ms-table{background:#ffffff06;border-radius:5px;padding:.3rem .4rem}
+  .ms-table-head{display:flex;gap:.3rem;padding-bottom:.2rem;border-bottom:1px solid #ffffff08;margin-bottom:.15rem}
+  .ms-table-head span{font-size:.38rem;color:#8885a3;flex:1}
+  .ms-table-row{display:flex;gap:.3rem;align-items:center;padding:.15rem 0;border-bottom:1px solid #ffffff05}
+  .ms-table-row:last-child{border-bottom:none}
+  .ms-table-row span{font-size:.4rem;color:#c8c4e0;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .ms-status{font-size:.36rem;padding:.1rem .3rem;border-radius:100px;font-weight:600}
+  .ms-status.ok{background:rgba(74,222,128,.15);color:#4ade80}
+  .ms-status.pend{background:rgba(1,161,254,.12);color:#01a1fe}
+
+  /* SIDE INFO */
+  .showcase-info{display:flex;flex-direction:column;gap:1.5rem;padding-top:.5rem}
+  .sinfo-title{
+    font-family:'Syne',sans-serif;font-weight:700;
+    font-size:1.3rem;letter-spacing:-.02em;margin-bottom:.5rem;
+  }
+  .sinfo-desc{font-size:.9rem;color:var(--muted);line-height:1.65;margin-bottom:1rem}
+  .sinfo-list{list-style:none;display:flex;flex-direction:column;gap:.45rem}
+  .sinfo-list li{font-size:.85rem;color:var(--muted);display:flex;gap:.5rem;align-items:flex-start}
+  .sinfo-list li::before{content:'"”';color:var(--accent);flex-shrink:0}
+  .sinfo-prazo{
+    display:inline-flex;align-items:center;gap:.4rem;
+    border:1px solid var(--border);border-radius:8px;
+    padding:.6rem .9rem;font-size:.82rem;color:var(--muted);
+    margin-top:.5rem;
+  }
+  .sinfo-prazo strong{color:var(--text);font-weight:600}
+  .sinfo-cta{
+    display:inline-flex;align-items:center;gap:.4rem;
+    background:var(--accent);color:#0a0a0f;
+    padding:.65rem 1.4rem;border-radius:100px;
+    font-weight:600;font-size:.85rem;text-decoration:none;
+    width:fit-content;transition:opacity .2s,transform .2s;margin-top:.25rem;
+  }
+  .sinfo-cta:hover{opacity:.85;transform:translateY(-1px)}
+
+  @media(max-width:900px){
+    .showcase-wrap{grid-template-columns:1fr}
+    .showcase-info{padding-top:0}
+    .mock-dash{height:220px}
+  }
+
+  /* CTA */
+  .cta-section{text-align:center;padding:6rem 2rem}
+  .cta-box{
+    max-width:660px;margin:0 auto;
+    background:var(--surface2);border:1px solid var(--border);
+    border-radius:20px;padding:3.5rem 3rem;
+    position:relative;overflow:hidden;
+  }
+  .cta-box::before{
+    content:'';position:absolute;top:-60%;left:50%;transform:translateX(-50%);
+    width:500px;height:300px;
+    background:radial-gradient(ellipse,rgba(124,92,252,.12),transparent 70%);
+    pointer-events:none;
+  }
+  .cta-box h2{font-size:clamp(1.7rem,3.5vw,2.5rem);margin-bottom:.9rem}
+  .cta-box p{color:var(--muted);margin-bottom:2rem;line-height:1.65;font-size:.98rem}
+
+  /* FOOTER */
+  footer{
+    border-top:1px solid var(--border);padding:2rem;
+    display:flex;align-items:center;justify-content:space-between;
+    flex-wrap:wrap;gap:1rem;font-size:.83rem;color:var(--muted);
+  }
+  footer a{color:var(--muted);text-decoration:none;transition:color .2s}
+  footer a:hover{color:var(--text)}
+  .footer-links{display:flex;gap:1.2rem}
+  .social-link{
+    display:inline-flex;align-items:center;gap:.4rem;
+    border:1px solid var(--border);border-radius:100px;padding:.3rem .75rem;
+    transition:border-color .2s;
+  }
+  .social-link:hover{border-color:#ffffff28;color:var(--text)!important}
+
+  /* SCROLL REVEAL */
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity .65s ease,transform .65s ease}
+  .reveal.visible{opacity:1;transform:translateY(0)}
+  .d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
+
+  /* MOBILE */
+  @media(max-width:900px){
+    .services-grid,.results-grid{grid-template-columns:1fr}
+  }
+  @media(max-width:768px){
+    nav ul{display:none}
+    .hamburger{display:flex}
+    .stats{flex-direction:column}
+    .stat{flex:unset;border-right:none;border-bottom:1px solid var(--border)}
+    .stat:last-child{border-bottom:none}
+    .steps::before{display:none}
+    .steps{flex-direction:column;gap:2rem}
+    .step{text-align:left;padding:0;display:flex;gap:1rem;align-items:flex-start}
+    .step-num{min-width:48px;margin:0}
+    .cta-box{padding:2.2rem 1.4rem}
+    footer{flex-direction:column;align-items:flex-start}
+  }
+
+  @keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+  .hero>*{animation:fadeUp .75s ease both}
+  .hero .avail-pill{animation-delay:.08s}
+  .hero h1{animation-delay:.18s}
+  .hero .hero-sub{animation-delay:.28s}
+  .hero .hero-actions{animation-delay:.38s}
+</style>
+</head>
+<body>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#servicos" onclick="closeMenu()">Serviços</a>
+  <a href="#como-funciona" onclick="closeMenu()">Como funciona</a>
+  <a href="#resultados" onclick="closeMenu()">O que muda</a>
+  <a href="#contato" class="nav-cta" onclick="closeMenu()">Fale comigo</a>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">gui<span>gestor</span></a>
+  <ul>
+    <li><a href="#servicos">Serviços</a></li>
+    <li><a href="#como-funciona">Como funciona</a></li>
+    <li><a href="#resultados">O que muda</a></li>
+    <li><a href="#contato" class="nav-cta">Fale comigo</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Menu" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+  <div>
+    <div class="avail-pill">
+      <span class="avail-dot"></span>
+      Aberto para novos projetos
+    </div>
+    <h1>
+      Mais clientes.<br>
+      <em>Mais resultado.</em>
+    </h1>
+    <p class="hero-sub">
+      Cuido do Tráfego pago, das Automações e do site pra você parar de jogar dinheiro fora e começar a ver retorno de verdade.
+    </p>
+    <div class="hero-actions">
+      <a href="https://wa.me/5511940420344" target="_blank" class="btn-primary">
+        Falar no WhatsApp →
+      </a>
+      <a href="#servicos" class="btn-ghost">Ver serviços</a>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat reveal">
+    <span class="stat-num">+150</span>
+    <div class="stat-label">Campanhas gerenciadas</div>
+  </div>
+  <div class="stat reveal d1">
+    <span class="stat-num">3×</span>
+    <div class="stat-label">ROI médio entregue</div>
+  </div>
+  <div class="stat reveal d2">
+    <span class="stat-num">100%</span>
+    <div class="stat-label">Foco em resultado</div>
+  </div>
+  <div class="stat reveal d3">
+    <span class="stat-num">24h</span>
+    <div class="stat-label">Suporte ao cliente</div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section id="servicos">
+  <div class="container">
+    <span class="eyebrow reveal">serviços</span>
+    <h2 class="reveal">No que posso<br>te ajudar</h2>
+    <p class="lead reveal">Clique em cada card pra ver o que está incluso.</p>
+
+    <div class="services-grid">
+
+      <!-- TRÁFEGO -->
+      <div class="service-card reveal" onclick="toggleCard(this)">
+        <div class="svc-icon icon-traffic">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/>
+          </svg>
+        </div>
+        <h3>Tráfego Pago</h3>
+        <p>Meta Ads e Google Ads gerenciados de perto. Configuro, otimizo e reporto "” sem enrolação.</p>
+        <div class="service-tags">
+          <span class="tag">Meta Ads</span>
+          <span class="tag">Google Ads</span>
+          <span class="tag">Remarketing</span>
+          <span class="tag">Funil</span>
+        </div>
+        <div class="card-toggle">
+          <span class="toggle-icon">▾</span> Ver detalhes
+        </div>
+        <div class="card-expand">
+          <div class="expand-inner">
+            <ul>
+              <li>Criação e gestão completa das campanhas</li>
+              <li>Segmentação por público, interesse e comportamento</li>
+              <li>Remarketing para quem já visitou seu site ou Instagram</li>
+              <li>Testes A/B de criativos e textos dos anúncios</li>
+              <li>Relatório direto ao ponto toda semana</li>
+            </ul>
+            <a href="https://wa.me/5511940420344?text=Oi%20Gui!%20Tenho%20interesse%20em%20Tráfego%20Pago." target="_blank" class="card-cta">Quero saber mais →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- AUTOMAÇÕES -->
+      <div class="service-card reveal d1" onclick="toggleCard(this)">
+        <div class="svc-icon icon-auto">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+          </svg>
+        </div>
+        <h3>Automações</h3>
+        <p>Processos que rodam sozinhos enquanto você foca no que é seu. WhatsApp, CRM, e-mail "” tudo integrado.</p>
+        <div class="service-tags">
+          <span class="tag">n8n</span>
+          <span class="tag">CRM</span>
+          <span class="tag">WhatsApp</span>
+          <span class="tag">E-mail</span>
+        </div>
+        <div class="card-toggle">
+          <span class="toggle-icon">▾</span> Ver detalhes
+        </div>
+        <div class="card-expand">
+          <div class="expand-inner">
+            <ul>
+              <li>Atendimento automático via WhatsApp</li>
+              <li>Integração entre ferramentas com n8n ou Make</li>
+              <li>E-mail marketing segmentado por comportamento</li>
+              <li>CRM ajustado pro seu processo de vendas</li>
+              <li>Follow-ups, lembretes e notificações no piloto automático</li>
+            </ul>
+            <a href="https://wa.me/5511940420344?text=Oi%20Gui!%20Tenho%20interesse%20em%20Automações." target="_blank" class="card-cta">Quero saber mais →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- SITES -->
+      <div class="service-card reveal d2" onclick="toggleCard(this)">
+        <div class="svc-icon icon-sites">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>
+          </svg>
+        </div>
+        <h3>Criação de Sites</h3>
+        <p>Landing page ou site institucional feito pra converter "” rápido, bem feito e integrado com seus canais.</p>
+        <div class="service-tags">
+          <span class="tag">Landing page</span>
+          <span class="tag">Institucional</span>
+          <span class="tag">SEO</span>
+          <span class="tag">Mobile</span>
+        </div>
+        <div class="card-toggle">
+          <span class="toggle-icon">▾</span> Ver detalhes
+        </div>
+        <div class="card-expand">
+          <div class="expand-inner">
+            <ul>
+              <li>Copy incluso "” não entrego site vazio de conteúdo</li>
+              <li>Design limpo, responsivo e rápido</li>
+              <li>SEO básico configurado desde o início</li>
+              <li>Integração com WhatsApp, formulário e pixel</li>
+              <li>Landing page: entrega em até 7 dias úteis</li>
+              <li>Site institucional ou com área de gestão: mínimo 30 dias</li>
+            </ul>
+            <a href="https://wa.me/5511940420344?text=Oi%20Gui!%20Tenho%20interesse%20em%20Criação%20de%20Site." target="_blank" class="card-cta">Quero saber mais →</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SITE SHOWCASE -->
+<section id="modelos-de-site" style="background:var(--surface)">
+  <div class="container">
+    <span class="eyebrow reveal">criação de sites</span>
+    <h2 class="reveal">Qual tipo de site<br>você precisa?</h2>
+    <p class="lead reveal" style="margin-bottom:2rem">Clique em cada modelo pra ver como fica na prática.</p>
+
+    <div class="showcase-tabs reveal">
+      <button class="stab active" onclick="switchTab('lp',this)">Landing Page</button>
+      <button class="stab" onclick="switchTab('inst',this)">Site Institucional</button>
+      <button class="stab" onclick="switchTab('dash',this)">Sistema de Gestão</button>
+    </div>
+
+    <div class="showcase-wrap">
+      <!-- BROWSER MOCKUP -->
+      <div class="browser reveal">
+        <div class="browser-bar">
+          <span class="browser-dot"></span>
+          <span class="browser-dot"></span>
+          <span class="browser-dot"></span>
+          <span class="browser-url" id="browserUrl">seusite.com.br</span>
+        </div>
+        <div class="browser-content">
+
+          <!-- LANDING PAGE -->
+          <div class="mock-panel active ms" id="mock-lp">
+            <div class="ms-nav">
+              <div class="ms-logo">clinica<span>bella</span></div>
+              <div class="ms-nav-links">
+                <a href="#">Tratamentos</a><a href="#">Sobre</a><a href="#">Contato</a>
+                <span class="ms-cta-sm">Agendar</span>
+              </div>
+            </div>
+            <div style="background:linear-gradient(135deg,#08001a,#130825,#0a0018);padding:1.1rem .9rem .85rem;border-bottom:1px solid #ffffff0d">
+              <span style="display:inline-block;background:rgba(1,161,254,.12);color:#01a1fe;font-size:.44rem;font-weight:600;padding:.15rem .45rem;border-radius:100px;margin-bottom:.45rem">&#x2756; Clinica Estetica &middot; Sao Paulo</span>
+              <div style="font-family:'Inter',sans-serif;font-weight:800;font-size:1.15rem;line-height:1.08;color:#f0eeff;letter-spacing:-.03em;margin-bottom:.4rem">Transforme sua<br><span style="color:#01a1fe">autoestima</span> com<br>tratamentos reais.</div>
+              <div style="font-size:.45rem;color:#8885a3;margin-bottom:.55rem;line-height:1.5">Avaliacao gratuita com especialistas.<br>Resultados visiveis, sem promessas vazias.</div>
+              <div style="display:flex;gap:.35rem;align-items:center">
+                <span style="background:#01a1fe;color:#0a0a0f;padding:.3rem .65rem;border-radius:100px;font-size:.47rem;font-weight:700">Agendar avaliacao</span>
+                <span style="border:1px solid #ffffff22;color:#c8c4e0;padding:.3rem .6rem;border-radius:100px;font-size:.46rem">Ver tratamentos</span>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;background:#0d0d18">
+              <div style="padding:.5rem .6rem;border-right:1px solid #ffffff0d">
+                <div style="font-size:.48rem;color:#01a1fe;font-weight:700;margin-bottom:.12rem">Botox</div>
+                <div style="font-size:.41rem;color:#8885a3">Rugas e expressao</div>
+              </div>
+              <div style="padding:.5rem .6rem;border-right:1px solid #ffffff0d">
+                <div style="font-size:.48rem;color:#01a1fe;font-weight:700;margin-bottom:.12rem">Preenchimento</div>
+                <div style="font-size:.41rem;color:#8885a3">Volume facial</div>
+              </div>
+              <div style="padding:.5rem .6rem">
+                <div style="font-size:.48rem;color:#01a1fe;font-weight:700;margin-bottom:.12rem">Peeling</div>
+                <div style="font-size:.41rem;color:#8885a3">Renovacao da pele</div>
+              </div>
+            </div>
+            <div style="padding:.45rem .9rem;display:flex;align-items:center;gap:.5rem;border-top:1px solid #ffffff0d;background:#0a0a0f">
+              <div style="display:flex">
+                <div style="width:15px;height:15px;border-radius:50%;background:linear-gradient(135deg,#f472b6,#ec4899);border:1.5px solid #0a0a0f;margin-right:-4px"></div>
+                <div style="width:15px;height:15px;border-radius:50%;background:linear-gradient(135deg,#a78bfa,#7c5cfc);border:1.5px solid #0a0a0f;margin-right:-4px"></div>
+                <div style="width:15px;height:15px;border-radius:50%;background:linear-gradient(135deg,#34d399,#059669);border:1.5px solid #0a0a0f"></div>
+              </div>
+              <div style="font-size:.42rem;color:#8885a3">+200 pacientes em Sao Paulo</div>
+              <div style="margin-left:auto;font-size:.44rem;color:#fbbf24;letter-spacing:.05em">&#x2605;&#x2605;&#x2605;&#x2605;&#x2605;</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;border-top:1px solid #ffffff0d">
+              <div style="padding:.45rem .6rem;border-right:1px solid #ffffff0d">
+                <div style="font-size:.44rem;color:#f0eeff;font-weight:600;margin-bottom:.1rem">Rapido</div>
+                <div style="font-size:.4rem;color:#8885a3">Carrega em menos de 2s</div>
+              </div>
+              <div style="padding:.45rem .6rem;border-right:1px solid #ffffff0d">
+                <div style="font-size:.44rem;color:#f0eeff;font-weight:600;margin-bottom:.1rem">Responsivo</div>
+                <div style="font-size:.4rem;color:#8885a3">Perfeito no celular</div>
+              </div>
+              <div style="padding:.45rem .6rem">
+                <div style="font-size:.44rem;color:#f0eeff;font-weight:600;margin-bottom:.1rem">Rastreado</div>
+                <div style="font-size:.4rem;color:#8885a3">Pixel configurado</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- INSTITUCIONAL — tema claro / light -->
+          <div class="mock-panel ms" id="mock-inst" style="background:#f4f3ff">
+            <!-- nav branca -->
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:.55rem .8rem;background:#fff;border-bottom:1px solid #e8e4ff">
+              <div style="font-weight:800;font-size:.7rem;color:#1e1144;font-family:'Inter',sans-serif;letter-spacing:-.02em">silva<span style="color:#6d28d9">advocacia</span></div>
+              <div style="display:flex;gap:.5rem;align-items:center">
+                <a style="color:#64748b;font-size:.47rem;text-decoration:none">Inicio</a>
+                <a style="color:#64748b;font-size:.47rem;text-decoration:none">Sobre</a>
+                <a style="color:#64748b;font-size:.47rem;text-decoration:none">Areas</a>
+                <a style="color:#64748b;font-size:.47rem;text-decoration:none">Equipe</a>
+                <span style="background:#6d28d9;color:#fff;padding:.25rem .55rem;border-radius:100px;font-size:.47rem;font-weight:700">Consulta</span>
+              </div>
+            </div>
+            <!-- hero: texto esquerda, foto direita -->
+            <div style="display:grid;grid-template-columns:1fr 1fr;background:#fff">
+              <div style="padding:1rem .9rem .8rem;border-right:1px solid #ede9fe">
+                <div style="font-size:.43rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#6d28d9;margin-bottom:.38rem">Advocacia Empresarial</div>
+                <div style="font-family:'Inter',sans-serif;font-weight:800;font-size:.95rem;line-height:1.1;color:#1e1144;letter-spacing:-.025em;margin-bottom:.38rem">Proteja seu<br>patrimonio com<br><span style="color:#6d28d9">seguranca juridica.</span></div>
+                <div style="font-size:.42rem;color:#64748b;line-height:1.5;margin-bottom:.5rem">Assessoria em direito empresarial, contratos e conformidade legal para empresas de todos os portes.</div>
+                <div style="display:flex;gap:.28rem">
+                  <span style="background:#6d28d9;color:#fff;padding:.27rem .6rem;border-radius:100px;font-size:.45rem;font-weight:700">Falar com advogado</span>
+                  <span style="border:1px solid #c4b5fd;color:#6d28d9;padding:.27rem .55rem;border-radius:100px;font-size:.43rem">Nossas areas</span>
+                </div>
+              </div>
+              <div style="background:linear-gradient(145deg,#ede9fe,#ddd6fe,#c4b5fd);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:.8rem;gap:.28rem">
+                <div style="width:42px;height:42px;border-radius:50%;background:#6d28d9;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(109,40,217,.35)">
+                  <div style="font-size:.58rem;color:#fff;font-weight:800;font-family:'Inter',sans-serif">DR</div>
+                </div>
+                <div style="font-size:.45rem;color:#1e1144;font-weight:700;font-family:'Inter',sans-serif">Dr. Carlos Silva</div>
+                <div style="font-size:.38rem;color:#6d28d9;font-weight:500">OAB/SP 123.456</div>
+                <div style="width:65%;height:1px;background:#c4b5fd;margin:.08rem 0"></div>
+                <div style="font-size:.38rem;color:#64748b;text-align:center;line-height:1.4">15 anos de experiencia<br>em direito empresarial</div>
+              </div>
+            </div>
+            <!-- areas de atuacao -->
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;background:#faf9ff;border-top:1px solid #ede9fe">
+              <div style="padding:.48rem .6rem;border-right:1px solid #ede9fe">
+                <div style="font-size:.45rem;color:#6d28d9;font-weight:700;margin-bottom:.1rem">Contratos</div>
+                <div style="font-size:.39rem;color:#64748b">Elaboracao e revisao</div>
+              </div>
+              <div style="padding:.48rem .6rem;border-right:1px solid #ede9fe">
+                <div style="font-size:.45rem;color:#6d28d9;font-weight:700;margin-bottom:.1rem">Trabalhista</div>
+                <div style="font-size:.39rem;color:#64748b">Gestao de riscos</div>
+              </div>
+              <div style="padding:.48rem .6rem">
+                <div style="font-size:.45rem;color:#6d28d9;font-weight:700;margin-bottom:.1rem">Societario</div>
+                <div style="font-size:.39rem;color:#64748b">Abertura e fusoes</div>
+              </div>
+            </div>
+            <!-- barra de stats — roxa, preenche o fundo -->
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;background:#6d28d9;flex:1">
+              <div style="padding:.5rem .6rem;text-align:center;border-right:1px solid rgba(255,255,255,.18)">
+                <div style="font-family:'Inter',sans-serif;font-size:.78rem;font-weight:800;color:#fff;line-height:1">+500</div>
+                <div style="font-size:.37rem;color:#c4b5fd;margin-top:.12rem">casos resolvidos</div>
+              </div>
+              <div style="padding:.5rem .6rem;text-align:center;border-right:1px solid rgba(255,255,255,.18)">
+                <div style="font-family:'Inter',sans-serif;font-size:.78rem;font-weight:800;color:#fff;line-height:1">15 anos</div>
+                <div style="font-size:.37rem;color:#c4b5fd;margin-top:.12rem">de experiencia</div>
+              </div>
+              <div style="padding:.5rem .6rem;text-align:center">
+                <div style="font-family:'Inter',sans-serif;font-size:.78rem;font-weight:800;color:#fff;line-height:1">98%</div>
+                <div style="font-size:.37rem;color:#c4b5fd;margin-top:.12rem">satisfacao</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- DASHBOARD / GESTAO -->
+          <div class="mock-panel ms" id="mock-dash">
+            <div style="display:flex;align-items:center;gap:.5rem;padding:.3rem .55rem;background:#08081a;border-bottom:1px solid #ffffff0d;flex-shrink:0">
+              <div style="font-family:'Inter',sans-serif;font-weight:800;font-size:.68rem;color:#f0eeff">minha<span style="color:#01a1fe">loja</span></div>
+              <div style="flex:1"></div>
+              <div style="background:#ffffff09;border-radius:100px;padding:.18rem .5rem;font-size:.4rem;color:#8885a3;min-width:55px">Buscar...</div>
+              <div style="font-size:.4rem;color:#8885a3">Notif.</div>
+              <div style="width:14px;height:14px;border-radius:50%;background:linear-gradient(135deg,#7c5cfc,#01a1fe);flex-shrink:0"></div>
+            </div>
+            <div style="display:flex;flex:1;overflow:hidden;min-height:0">
+              <div style="width:52px;background:#060614;border-right:1px solid #ffffff08;padding:.35rem .25rem;display:flex;flex-direction:column;gap:.12rem;flex-shrink:0">
+                <div style="padding:.22rem .3rem;border-radius:3px;background:rgba(1,161,254,.14);color:#01a1fe;font-size:.38rem;font-weight:600;white-space:nowrap">Dashboard</div>
+                <div style="padding:.22rem .3rem;color:#8885a3;font-size:.38rem;white-space:nowrap">Pedidos</div>
+                <div style="padding:.22rem .3rem;color:#8885a3;font-size:.38rem;white-space:nowrap">Clientes</div>
+                <div style="padding:.22rem .3rem;color:#8885a3;font-size:.38rem;white-space:nowrap">Estoque</div>
+                <div style="padding:.22rem .3rem;color:#8885a3;font-size:.38rem;white-space:nowrap">Relatorios</div>
+                <div style="padding:.22rem .3rem;color:#8885a3;font-size:.38rem;white-space:nowrap;margin-top:auto">Config</div>
+              </div>
+              <div style="flex:1;padding:.4rem .5rem;background:#0d0d18;overflow:hidden;display:flex;flex-direction:column;gap:.3rem;min-width:0">
+                <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.28rem">
+                  <div style="background:#ffffff07;border-radius:5px;padding:.3rem .35rem">
+                    <div style="font-size:.37rem;color:#8885a3;margin-bottom:.1rem">Receita do mes</div>
+                    <div style="font-family:'Inter',sans-serif;font-size:.68rem;font-weight:800;color:#01a1fe;line-height:1">R$ 12.580</div>
+                    <div style="font-size:.34rem;color:#4ade80;margin-top:.1rem">+18% vs mes ant.</div>
+                  </div>
+                  <div style="background:#ffffff07;border-radius:5px;padding:.3rem .35rem">
+                    <div style="font-size:.37rem;color:#8885a3;margin-bottom:.1rem">Pedidos</div>
+                    <div style="font-family:'Inter',sans-serif;font-size:.68rem;font-weight:800;color:#a78bfa;line-height:1">320</div>
+                    <div style="font-size:.34rem;color:#4ade80;margin-top:.1rem">+12 hoje</div>
+                  </div>
+                  <div style="background:#ffffff07;border-radius:5px;padding:.3rem .35rem">
+                    <div style="font-size:.37rem;color:#8885a3;margin-bottom:.1rem">Clientes ativos</div>
+                    <div style="font-family:'Inter',sans-serif;font-size:.68rem;font-weight:800;color:#7dd3fc;line-height:1">1.250</div>
+                    <div style="font-size:.34rem;color:#4ade80;margin-top:.1rem">+43 esta semana</div>
+                  </div>
+                </div>
+                <div style="background:#ffffff06;border-radius:5px;padding:.3rem .4rem;flex:1;display:flex;flex-direction:column;min-height:0">
+                  <div style="font-size:.4rem;color:#f0eeff;font-weight:600;margin-bottom:.22rem">Vendas por semana</div>
+                  <div style="flex:1;display:flex;align-items:flex-end;gap:.18rem;min-height:0">
+                    <div style="flex:1;height:38%;border-radius:2px 2px 0 0;background:#ffffff10"></div>
+                    <div style="flex:1;height:58%;border-radius:2px 2px 0 0;background:#ffffff10"></div>
+                    <div style="flex:1;height:44%;border-radius:2px 2px 0 0;background:#ffffff10"></div>
+                    <div style="flex:1;height:78%;border-radius:2px 2px 0 0;background:#7c5cfc"></div>
+                    <div style="flex:1;height:52%;border-radius:2px 2px 0 0;background:#ffffff10"></div>
+                    <div style="flex:1;height:90%;border-radius:2px 2px 0 0;background:#01a1fe"></div>
+                    <div style="flex:1;height:65%;border-radius:2px 2px 0 0;background:#ffffff10"></div>
+                  </div>
+                  <div style="display:flex;justify-content:space-between;margin-top:.12rem">
+                    <span style="font-size:.34rem;color:#8885a3">Seg</span>
+                    <span style="font-size:.34rem;color:#8885a3">Ter</span>
+                    <span style="font-size:.34rem;color:#8885a3">Qua</span>
+                    <span style="font-size:.34rem;color:#a78bfa;font-weight:600">Qui</span>
+                    <span style="font-size:.34rem;color:#8885a3">Sex</span>
+                    <span style="font-size:.34rem;color:#01a1fe;font-weight:600">Sab</span>
+                    <span style="font-size:.34rem;color:#8885a3">Dom</span>
+                  </div>
+                </div>
+                <div style="background:#ffffff06;border-radius:5px;padding:.28rem .4rem;flex-shrink:0">
+                  <div style="font-size:.4rem;color:#f0eeff;font-weight:600;margin-bottom:.16rem">Pedidos recentes</div>
+                  <div style="display:grid;grid-template-columns:2fr 1.2fr 0.7fr 1fr;gap:.08rem .18rem">
+                    <div style="font-size:.35rem;color:#8885a3;padding-bottom:.1rem;border-bottom:1px solid #ffffff08">Cliente</div>
+                    <div style="font-size:.35rem;color:#8885a3;padding-bottom:.1rem;border-bottom:1px solid #ffffff08">Produto</div>
+                    <div style="font-size:.35rem;color:#8885a3;padding-bottom:.1rem;border-bottom:1px solid #ffffff08">Valor</div>
+                    <div style="font-size:.35rem;color:#8885a3;padding-bottom:.1rem;border-bottom:1px solid #ffffff08">Status</div>
+                    <div style="font-size:.37rem;color:#f0eeff;padding:.08rem 0">Ana Silva</div>
+                    <div style="font-size:.37rem;color:#c8c4e0;padding:.08rem 0">Vestido Floral</div>
+                    <div style="font-size:.37rem;color:#f0eeff;padding:.08rem 0">R$ 189</div>
+                    <div style="padding:.08rem 0"><span style="font-size:.34rem;background:rgba(74,222,128,.12);color:#4ade80;padding:.06rem .18rem;border-radius:100px">Entregue</span></div>
+                    <div style="font-size:.37rem;color:#f0eeff;padding:.08rem 0">Carla M.</div>
+                    <div style="font-size:.37rem;color:#c8c4e0;padding:.08rem 0">Blusa Linho</div>
+                    <div style="font-size:.37rem;color:#f0eeff;padding:.08rem 0">R$ 97</div>
+                    <div style="padding:.08rem 0"><span style="font-size:.34rem;background:rgba(251,191,36,.12);color:#fbbf24;padding:.06rem .18rem;border-radius:100px">Enviado</span></div>
+                    <div style="font-size:.37rem;color:#f0eeff;padding:.08rem 0">Juliana R.</div>
+                    <div style="font-size:.37rem;color:#c8c4e0;padding:.08rem 0">Calca Wide</div>
+                    <div style="font-size:.37rem;color:#f0eeff;padding:.08rem 0">R$ 234</div>
+                    <div style="padding:.08rem 0"><span style="font-size:.34rem;background:rgba(1,161,254,.12);color:#01a1fe;padding:.06rem .18rem;border-radius:100px">Pendente</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- SIDE INFO -->
+      <div class="showcase-info">
+        <div id="sinfo-lp">
+          <div class="sinfo-title">Landing Page</div>
+          <div class="sinfo-desc">Página focada em converter visitante em contato ou compra. Sem distração, sem menu cheio "” só o que precisa pra fechar negócio.</div>
+          <ul class="sinfo-list">
+            <li>Copywriting incluso</li>
+            <li>Design responsivo e rápido</li>
+            <li>Formulário ou botão de WhatsApp</li>
+            <li>Pixel de rastreamento configurado</li>
+            <li>SEO básico desde o início</li>
+          </ul>
+          <div class="sinfo-prazo">⏱ Entrega em até <strong>&nbsp;7 dias úteis</strong></div>
+          <a href="https://wa.me/5511940420344?text=Oi%20Gui!%20Tenho%20interesse%20em%20uma%20Landing%20Page." target="_blank" class="sinfo-cta">Quero uma landing page →</a>
+        </div>
+        <div id="sinfo-inst" style="display:none">
+          <div class="sinfo-title">Site Institucional</div>
+          <div class="sinfo-desc">Apresenta sua empresa com profissionalismo "” quem você é, o que faz, onde encontrar. Ideal pra quem quer presença digital completa.</div>
+          <ul class="sinfo-list">
+            <li>Múltiplas páginas (home, sobre, serviços, contato)</li>
+            <li>Design personalizado pro seu segmento</li>
+            <li>Blog ou área de notícias opcional</li>
+            <li>SEO estruturado em todas as páginas</li>
+            <li>Integração com Google Maps e redes sociais</li>
+          </ul>
+          <div class="sinfo-prazo">⏱ Prazo mínimo de <strong>&nbsp;30 dias</strong></div>
+          <a href="https://wa.me/5511940420344?text=Oi%20Gui!%20Tenho%20interesse%20em%20um%20Site%20Institucional." target="_blank" class="sinfo-cta">Quero um site institucional →</a>
+        </div>
+        <div id="sinfo-dash" style="display:none">
+          <div class=”sinfo-title”>Sistema de Gestão</div>
+          <div class=”sinfo-desc”>Seu site com um painel interno completo — controle de pedidos, clientes, estoque e relatórios. Tudo num só lugar, feito sob medida pro seu negócio.</div>
+          <ul class="sinfo-list">
+            <li>Dashboard com dados do seu negócio</li>
+            <li>Login e controle de acesso por perfil</li>
+            <li>Cadastro e gestão de clientes ou produtos</li>
+            <li>Relatórios e exportações</li>
+            <li>Integrações com outras ferramentas</li>
+          </ul>
+          <div class="sinfo-prazo">⏱ Prazo mínimo de <strong>&nbsp;30 dias</strong></div>
+          <a href="https://wa.me/5511940420344?text=Oi%20Gui!%20Tenho%20interesse%20em%20um%20site%20com%20área%20de%20gestão." target="_blank" class="sinfo-cta">Quero um sistema web →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="como-funciona" style="background:var(--surface)">
+  <div class="container">
+    <span class="eyebrow reveal">processo</span>
+    <h2 class="reveal">Do primeiro contato<br>aos primeiros resultados</h2>
+    <p class="lead reveal" style="margin-bottom:4rem">Sem burocracia, sem sumiços, sem surpresa no caminho.</p>
+
+    <div class="steps">
+      <div class="step reveal">
+        <div class="step-num">01</div>
+        <div>
+          <h4>A gente conversa</h4>
+          <p>Entendo o negócio, o que já tentou e o que quer alcançar. Sem formulário, direto no WhatsApp.</p>
+        </div>
+      </div>
+      <div class="step reveal d1">
+        <div class="step-num">02</div>
+        <div>
+          <h4>Monto a estratégia</h4>
+          <p>Defino canais, orçamento e prioridades com base no que faz sentido pro seu momento.</p>
+        </div>
+      </div>
+      <div class="step reveal d2">
+        <div class="step-num">03</div>
+        <div>
+          <h4>Coloco no ar</h4>
+          <p>Executo, acompanho e ajusto conforme os dados chegam. Nada de "vamos ver depois".</p>
+        </div>
+      </div>
+      <div class="step reveal d3">
+        <div class="step-num">04</div>
+        <div>
+          <h4>você acompanha tudo</h4>
+          <p>Relatório semanal com o que importa "” sem planilha de 40 abas que ninguém entende.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section id="resultados">
+  <div class="container">
+    <span class="eyebrow reveal">o que muda</span>
+    <h2 class="reveal">O que você ganha<br>com uma boa gestão</h2>
+    <p class="lead reveal" style="margin-bottom:3rem">Cada negócio tem seu ritmo "” mas certas mudanças aparecem cedo pra quase todo mundo.</p>
+
+    <div class="results-grid">
+      <div class="result-card reveal">
+        <div class="result-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#01a1fe" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/>
+          </svg>
+        </div>
+        <h4>Menos dinheiro desperdiçado</h4>
+        <p>Anúncio mal segmentado queima verba todo dia. Com campanhas bem estruturadas, cada real trabalha melhor.</p>
+      </div>
+      <div class="result-card reveal d1">
+        <div class="result-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+        </div>
+        <h4>Leads que realmente compram</h4>
+        <p>Volume alto de lead ruim não paga conta. O foco é atrair quem tem perfil e intenção real de compra.</p>
+      </div>
+      <div class="result-card reveal d2">
+        <div class="result-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#7dd3fc" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+          </svg>
+        </div>
+        <h4>Processos que rodam sem você</h4>
+        <p>Com as Automações certas, atendimento, follow-up e agendamento acontecem sem precisar de ninguém na frente.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contato">
+  <div class="cta-box reveal">
+    <span class="eyebrow" style="display:block;margin-bottom:1rem">bora conversar?</span>
+    <h2>Me manda uma mensagem<br>sem compromisso</h2>
+    <p>Conta o que você precisa. Se eu conseguir ajudar, te digo como. Se não for o momento certo, também te falo.</p>
+    <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+      <a href="https://wa.me/5511940420344" target="_blank" class="btn-primary">
+        Abrir WhatsApp →
+      </a>
+      <a href="https://www.instagram.com/oguigestor" target="_blank" class="btn-ghost">
+        @oguigestor
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a href="#" style="font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;color:var(--text);text-decoration:none">
+    gui<span style="color:var(--accent)">gestor</span>
+  </a>
+  <div class="footer-links">
+    <a href="https://www.instagram.com/oguigestor" target="_blank" class="social-link">@oguigestor</a>
+    <a href="https://wa.me/5511940420344" target="_blank" class="social-link">WhatsApp</a>
+  </div>
+  <span>Â© 2025 Gui Gestor</span>
+</footer>
+
+<script>
+  function toggleMenu(){
+    const m=document.getElementById('mobileMenu'),b=document.getElementById('hamburger');
+    m.classList.toggle('open');b.classList.toggle('open');
+    document.body.style.overflow=m.classList.contains('open')?'hidden':'';
+  }
+  function closeMenu(){
+    document.getElementById('mobileMenu').classList.remove('open');
+    document.getElementById('hamburger').classList.remove('open');
+    document.body.style.overflow='';
+  }
+  function switchTab(type, btn){
+    // tabs
+    document.querySelectorAll('.stab').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    // mockups
+    document.querySelectorAll('.mock-panel').forEach(p=>p.classList.remove('active'));
+    document.getElementById('mock-'+type).classList.add('active');
+    // side info
+    ['lp','inst','dash'].forEach(t=>{
+      document.getElementById('sinfo-'+t).style.display = t===type ? 'block' : 'none';
+    });
+    // url bar
+    const urls={lp:'seusite.com.br',inst:'suaempresa.com.br',dash:'app.seusite.com.br/dashboard'};
+    document.getElementById('browserUrl').textContent = urls[type];
+  }
+
+  function toggleCard(card){
+    const open=card.classList.contains('open');
+    document.querySelectorAll('.service-card.open').forEach(c=>c.classList.remove('open'));
+    if(!open) card.classList.add('open');
+  }
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')});
+  },{threshold:.1});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
+
