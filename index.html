@@ -516,13 +516,16 @@
     footer{flex-direction:column;align-items:flex-start}
 
     /* ads carrossel */
-    #trafego-mockup{padding:3.5rem 0}
-    #trafego-mockup .container{padding-left:1.4rem;overflow:hidden}
-    #trafego-mockup .container>*:not(.ads-stage){padding-right:1.4rem}
+    #trafego-mockup{padding:3.5rem 0;overflow:hidden}
+    #trafego-mockup .container{padding:0;max-width:none;width:100%}
+    #trafego-mockup .container>.eyebrow,
+    #trafego-mockup .container>h2,
+    #trafego-mockup .container>.lead{padding-left:1.4rem;padding-right:1.4rem}
     .ads-stage{
-      flex-wrap:nowrap;
-      overflow-x:auto;
-      overflow-y:visible;
+      display:flex!important;
+      flex-wrap:nowrap!important;
+      overflow-x:scroll;
+      overflow-y:hidden;
       justify-content:flex-start;
       scroll-snap-type:x mandatory;
       -webkit-overflow-scrolling:touch;
@@ -530,17 +533,21 @@
       gap:1.2rem;
       cursor:grab;
       scrollbar-width:none;
+      width:100%;
+      box-sizing:border-box;
+      position:relative;
     }
     .ads-stage::-webkit-scrollbar{display:none}
     .adcard{
-      scroll-snap-align:center;
-      flex-shrink:0;
-      width:190px;
+      scroll-snap-align:start;
+      flex-shrink:0!important;
+      width:180px!important;
       transform:rotate(0deg)!important;
       margin-top:0!important;
+      min-width:180px;
     }
-    .adcard--tiktok{width:155px}
-    .adcard--youtube{width:190px}
+    .adcard--tiktok{width:150px!important;min-width:150px}
+    .adcard--youtube{width:180px!important;min-width:180px}
     .ads-chip{display:none}
   }
   @media(max-width:480px){
