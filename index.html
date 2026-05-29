@@ -20,12 +20,13 @@
     --muted:#8885a3;
     --card-bg:#13131a;
   }
-  html{scroll-behavior:smooth}
+  html{scroll-behavior:smooth;overflow-x:hidden;max-width:100%}
   body{
     font-family:'DM Sans',sans-serif;
     background:var(--bg);
     color:var(--text);
     overflow-x:hidden;
+    max-width:100%;
   }
   body::before{
     content:'';
@@ -85,7 +86,7 @@
   .hero{
     min-height:100vh;
     display:flex;align-items:center;justify-content:center;
-    text-align:center;padding:8rem 2rem 4rem;position:relative;
+    text-align:center;padding:8rem 2rem 4rem;position:relative;overflow:hidden;
   }
   .hero-glow{
     position:absolute;top:20%;left:50%;transform:translateX(-50%);
